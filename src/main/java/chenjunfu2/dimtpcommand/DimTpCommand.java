@@ -38,7 +38,7 @@ public class DimTpCommand implements ModInitializer {
 	{
 		var command = CommandManager
 			.literal("dimtp")
-        	.requires(source -> source.hasPermissionLevel(2))
+        	//.requires(source -> source.hasPermissionLevel(2))
         	.then(CommandManager.argument("dimension", DimensionArgumentType.dimension())
         	    .then(CommandManager.argument("x", DoubleArgumentType.doubleArg())
         	        .then(CommandManager.argument("y", DoubleArgumentType.doubleArg())
