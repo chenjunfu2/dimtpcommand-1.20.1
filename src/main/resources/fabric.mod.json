@@ -20,7 +20,11 @@
 		]
 	},
 	"mixins": [
-		"dimtpcommand.mixins.json"
+		"dimtpcommand.mixins.json",
+		{
+			"config": "dimtpcommand.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"depends": {
 		"fabricloader": ">=0.16.10",

@@ -2,7 +2,6 @@ package chenjunfu2.dimtpcommand;
 
 import chenjunfu2.dimtpcommand.mixin.TeleportCommandAccessor;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.api.ModInitializer;
@@ -19,6 +18,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

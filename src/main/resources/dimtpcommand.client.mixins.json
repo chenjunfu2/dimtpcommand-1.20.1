@@ -1,0 +1,12 @@
+{
+  "required": false,
+  "package": "chenjunfu2.dimtpcommand.mixin.client",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "XaeroMixinPlugin",
+  "client": [
+    "WaypointTeleportMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

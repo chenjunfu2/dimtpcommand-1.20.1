@@ -11,11 +11,6 @@ loom {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
 }
 
 dependencies {
@@ -26,6 +21,10 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+
+	modCompileOnly files("libs/xaerominimap-fabric-1.20.1-26.4.2.jar")
+	modCompileOnly files("libs/xaeroworldmap-fabric-1.20.1-1.44.2.jar")
+	modCompileOnly files("libs/xaerolib-fabric-1.20.1-1.7.1.jar")
 }
 
 processResources {
