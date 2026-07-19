@@ -45,8 +45,9 @@ public class DimTpCommand implements ModInitializer {
         	//.requires(source -> source.hasPermissionLevel(2))
         	.then(CommandManager.argument("dimension", DimensionArgumentType.dimension())
         	    .then(CommandManager.argument("location", Vec3ArgumentType.vec3())
+					.executes(context -> execute(context, false))
 					.then(CommandManager.argument("rotation", RotationArgumentType.rotation())
-        	        	.executes(DimTpCommand::execute)
+        	        	.executes(context -> execute(context, true))
         	    	)
 				)
         	);
@@ -58,7 +59,7 @@ public class DimTpCommand implements ModInitializer {
         return String.format(Locale.ROOT, "%f", d);
     }
 	
-	private static int execute(CommandContext<ServerCommandSource> context) throws CommandSyntaxException
+	private static int execute(CommandContext<ServerCommandSource> context, boolean hasRetation) throws CommandSyntaxException
 	{
 		ServerCommandSource source = context.getSource();
         ServerPlayerEntity player = source.getPlayer();
@@ -70,11 +71,8 @@ public class DimTpCommand implements ModInitializer {
         }
 		
 		ServerWorld targetWorld = DimensionArgumentType.getDimensionArgument(context, "dimension");
-
 		PosArgument location = Vec3ArgumentType.getPosArgument(context, "location");
-		PosArgument rotation = RotationArgumentType.getRotation(context, "rotation");
-		
-		TeleportCommandAccessor.execute(source, Collections.singleton(player), targetWorld, location, rotation, null);
-		return 1;
+		PosArgument rotation = hasRetation ? RotationArgumentType.getRotation(context, "rotation") : null;
+		return TeleportCommandAccessor.execute(source, Collections.singleton(player), targetWorld, location, rotation, null);
 	}
 }
