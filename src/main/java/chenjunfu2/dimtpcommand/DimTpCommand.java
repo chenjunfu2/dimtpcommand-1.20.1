@@ -10,6 +10,9 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.argument.DimensionArgumentType;
+import net.minecraft.command.argument.PosArgument;
+import net.minecraft.command.argument.RotationArgumentType;
+import net.minecraft.command.argument.Vec3ArgumentType;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,6 +23,7 @@ import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
@@ -40,13 +44,11 @@ public class DimTpCommand implements ModInitializer {
 			.literal("dimtp")
         	//.requires(source -> source.hasPermissionLevel(2))
         	.then(CommandManager.argument("dimension", DimensionArgumentType.dimension())
-        	    .then(CommandManager.argument("x", DoubleArgumentType.doubleArg())
-        	        .then(CommandManager.argument("y", DoubleArgumentType.doubleArg())
-        	            .then(CommandManager.argument("z", DoubleArgumentType.doubleArg())
-        	                .executes(DimTpCommand::execute)
-        	            )
-        	        )
-        	    )
+        	    .then(CommandManager.argument("location", Vec3ArgumentType.vec3())
+					.then(CommandManager.argument("rotation", RotationArgumentType.rotation())
+        	        	.executes(DimTpCommand::execute)
+        	    	)
+				)
         	);
 		
 		dispatcher.register(command);
@@ -69,15 +71,10 @@ public class DimTpCommand implements ModInitializer {
 		
 		ServerWorld targetWorld = DimensionArgumentType.getDimensionArgument(context, "dimension");
 
-        double x = DoubleArgumentType.getDouble(context, "x");
-        double y = DoubleArgumentType.getDouble(context, "y");
-        double z = DoubleArgumentType.getDouble(context, "z");
+		PosArgument location = Vec3ArgumentType.getPosArgument(context, "location");
+		PosArgument rotation = RotationArgumentType.getRotation(context, "rotation");
 		
-		Set<PositionFlag> set = EnumSet.of(PositionFlag.X_ROT, PositionFlag.Y_ROT);
-		
-		TeleportCommandAccessor.teleport(source, player, targetWorld, x, y, z, set, player.getYaw(), player.getPitch(), null);
-		source.sendFeedback(() -> Text.translatable("commands.teleport.success.location.single", new Object[]{player.getDisplayName(), formatFloat(x), formatFloat(y), formatFloat(z)}), true);
-	
+		TeleportCommandAccessor.execute(source, Collections.singleton(player), targetWorld, location, rotation, null);
 		return 1;
 	}
 }
